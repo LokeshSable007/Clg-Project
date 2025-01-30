@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Development Team - Health Care Center</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #00ADB5;
+            --secondary-color: #393E46;
+            --accent-color: #00ADB5;
+            --background-color: #222831;
+            --text-color: #EEEEEE;
+            --card-background: #393E46;
+            --light-text: #EEEEEE;
+            --dark-text: #222831;
+            --hover-color: #00858b;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.8;
+        }
+
+        .navbar {
+            background: var(--secondary-color);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .navbar-brand {
+            font-weight: 600;
+            font-size: 1.5rem;
+            color: var(--primary-color) !important;
+        }
+
+        .logo img {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .logo img:hover {
+            transform: scale(1.05);
+        }
+
+        .team-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .team-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .team-header h1 {
+            color: var(--light-text);
+        }
+
+        .team-header .lead {
+            color: var(--primary-color);
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-bottom: 3rem;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .team-card {
+            background: var(--card-background);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            border: 1px solid rgba(238, 238, 238, 0.1);
+        }
+
+        .team-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 12px rgba(0,0,0,0.3);
+            border-color: var(--primary-color);
+        }
+
+        .member-role {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .member-name {
+            color: var(--light-text);
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .responsibilities {
+            text-align: left;
+            margin-top: auto;
+            padding: 1rem;
+            background: rgba(34, 40, 49, 0.5);
+            border-radius: 10px;
+            border: 1px solid rgba(238, 238, 238, 0.1);
+        }
+
+        .responsibilities ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .responsibilities li {
+            color: var(--light-text);
+            margin-bottom: 0.5rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .responsibilities li:before {
+            content: "•";
+            color: var(--primary-color);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        .role-icon {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            background: rgba(34, 40, 49, 0.5);
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin: 0 auto 1.5rem;
+            border: 2px solid var(--primary-color);
+            transition: all 0.3s ease;
+        }
+
+        .team-card:hover .role-icon {
+            background: var(--primary-color);
+            color: var(--light-text);
+        }
+
+        .nav-link {
+            position: relative;
+            color: var(--light-text) !important;
+            padding: 0.5rem 1rem !important;
+            margin: 0 0.2rem;
+            transition: all 0.3s ease;
+            opacity: 0.8;
+        }
+
+        .nav-link:hover {
+            opacity: 1;
+        }
+
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 50%;
+            background-color: var(--primary-color);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .nav-link:hover:after {
+            width: 100%;
+        }
+
+        .nav-link.active {
+            color: var(--primary-color) !important;
+            font-weight: 500;
+            opacity: 1;
+        }
+
+        .nav-link.active:after {
+            width: 100%;
+        }
+
+        .navbar-nav {
+            gap: 0.5rem;
+        }
+
+        .emergency-btn {
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            padding: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .emergency-btn:hover {
+            color: var(--accent-color);
+            transform: scale(1.1);
+        }
+
+        .emergency-sidebar {
+            position: fixed;
+            top: 0;
+            right: -350px;
+            width: 350px;
+            height: 100vh;
+            background: var(--card-background);
+            padding: 2rem;
+            box-shadow: -2px 0 8px rgba(0,0,0,0.2);
+            transition: right 0.3s ease;
+            z-index: 1050;
+        }
+
+        .emergency-sidebar.active {
+            right: 0;
+        }
+
+        .emergency-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+        }
+
+        .emergency-close {
+            background: none;
+            border: none;
+            color: var(--light-text);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .emergency-close:hover {
+            color: var(--primary-color);
+            transform: scale(1.1);
+        }
+
+        .emergency-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .emergency-item {
+            background: var(--background-color);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .emergency-item:hover {
+            transform: translateX(-5px);
+            box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .emergency-item h5 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .emergency-item p {
+            color: var(--light-text);
+            margin-bottom: 0;
+            font-size: 1rem;
+        }
+
+        .emergency-item i {
+            color: var(--primary-color);
+            margin-right: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .team-section {
+                padding: 1rem;
+            }
+            
+            .team-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .team-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='img.png') }}" alt="Health Center Logo">
+            </div>
+            <a class="navbar-brand ms-3" href="/">Health Center</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/contact">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/developer">Developer</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/nearby">Nearby Centers</a>
+                    </li>
+                </ul>
+                <button class="emergency-btn" onclick="toggleEmergency()">
+                    <i class="fas fa-phone-alt"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Emergency Sidebar -->
+    <div class="emergency-sidebar" id="emergencySidebar">
+        <div class="emergency-header">
+            <h4><i class="fas fa-phone-alt"></i> Emergency Contacts</h4>
+            <button class="emergency-close" onclick="toggleEmergency()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <ul class="emergency-list">
+            <li class="emergency-item">
+                <h5><i class="fas fa-ambulance"></i> Ambulance</h5>
+                <p>102</p>
+            </li>
+            <li class="emergency-item">
+                <h5><i class="fas fa-hospital"></i> Medical Emergency</h5>
+                <p>108</p>
+            </li>
+            <li class="emergency-item">
+                <h5><i class="fas fa-phone-alt"></i> Health Helpline</h5>
+                <p>1075</p>
+            </li>
+            <li class="emergency-item">
+                <h5><i class="fas fa-first-aid"></i> First Aid Support</h5>
+                <p>1800-180-1104</p>
+            </li>
+            <li class="emergency-item">
+                <h5><i class="fas fa-heart"></i> Cardiac Emergency</h5>
+                <p>1800-180-1209</p>
+            </li>
+        </ul>
+    </div>
+
+    <div class="team-section">
+        <div class="team-header">
+            <h1 class="mb-3">Our Development Team</h1>
+            <p class="lead">Meet the talented individuals behind the Health Care Center</p>
+        </div>
+
+        <div class="team-grid">
+            <!-- Project Lead -->
+            <div class="team-card">
+                <i class="fas fa-crown role-icon"></i>
+                <h2 class="member-name">Lokesh Sable</h2>
+                <div class="member-role">Project Lead & ML Developer</div>
+                <div class="responsibilities">
+                    <ul>
+                        <li>Managing project workflow and coordination</li>
+                        <li>Selecting and training Machine Learning models</li>
+                        <li>Data preprocessing and model optimization</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Backend Developer -->
+            <div class="team-card">
+                <i class="fas fa-server role-icon"></i>
+                <h2 class="member-name">Suraj Mate</h2>
+                <div class="member-role">Backend Developer</div>
+                <div class="responsibilities">
+                    <ul>
+                        <li>Developing Flask backend and API integration</li>
+                        <li>Connecting ML models with the web application</li>
+                        <li>Managing the database</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Frontend Developer -->
+            <div class="team-card">
+                <i class="fas fa-laptop-code role-icon"></i>
+                <h2 class="member-name">Prajwal Fulzele</h2>
+                <div class="member-role">Frontend Developer</div>
+                <div class="responsibilities">
+                    <ul>
+                        <li>Designing and developing the user interface (UI/UX)</li>
+                        <li>Implementing interactive elements using HTML, CSS, JavaScript</li>
+                        <li>Maintaining Documentations</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Data Analyst -->
+            <div class="team-card">
+                <i class="fas fa-chart-line role-icon"></i>
+                <h2 class="member-name">Yashwant Lohande</h2>
+                <div class="member-role">Data Analysis</div>
+                <div class="responsibilities">
+                    <ul>
+                        <li>Collecting, cleaning, and analyzing medical datasets</li>
+                        <li>Evaluating model performance and accuracy</li>
+                        <li>Integrating frontend with Flask backend</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function toggleEmergency() {
+            const sidebar = document.getElementById('emergencySidebar');
+            sidebar.classList.toggle('active');
+        }
+    </script>
+  </body>
+</html>

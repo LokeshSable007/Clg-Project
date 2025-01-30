@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Contact Us - Health Care Center</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #00ADB5;
+            --secondary-color: #393E46;
+            --accent-color: #00ADB5;
+            --background-color: #222831;
+            --text-color: #EEEEEE;
+            --card-background: #393E46;
+            --light-text: #EEEEEE;
+            --dark-text: #222831;
+            --hover-color: #00858b;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.8;
+        }
+
+        .navbar {
+            background: var(--secondary-color);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .navbar-brand {
+            font-weight: 600;
+            font-size: 1.5rem;
+            color: var(--primary-color) !important;
+        }
+
+        .logo img {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .logo img:hover {
+            transform: scale(1.05);
+        }
+
+        .contact-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .contact-card {
+            background: var(--card-background);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .contact-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .section-title {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            font-size: 1.75rem;
+        }
+
+        .contact-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            color: var(--text-color);
+        }
+
+        .contact-info i {
+            font-size: 1.5rem;
+            color: var(--accent-color);
+            margin-right: 1rem;
+            width: 2.5rem;
+            text-align: center;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--accent-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            transform: translateY(-3px);
+            background: var(--secondary-color);
+            color: white;
+        }
+
+        .form-control {
+            border-radius: 10px;
+            border: 2px solid #e2e8f0;
+            padding: 0.75rem 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .btn-submit {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-submit:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .map-container {
+            border-radius: 16px;
+            overflow: hidden;
+            height: 300px;
+        }
+
+        @media (max-width: 768px) {
+            .contact-section {
+                padding: 1rem;
+            }
+            
+            .contact-card {
+                padding: 1.5rem;
+            }
+        }
+
+        /* Update navigation styles */
+        .nav-link {
+            position: relative;
+            color: var(--light-text) !important;
+            padding: 0.5rem 1rem !important;
+            margin: 0 0.2rem;
+            transition: all 0.3s ease;
+            opacity: 0.8;
+        }
+
+        .nav-link:hover {
+            opacity: 1;
+        }
+
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 50%;
+            background-color: var(--primary-color);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .nav-link:hover:after {
+            width: 100%;
+        }
+
+        .nav-link.active {
+            color: var(--primary-color) !important;
+            font-weight: 500;
+            opacity: 1;
+        }
+
+        .nav-link.active:after {
+            width: 100%;
+        }
+
+        .navbar-nav {
+            gap: 0.5rem;
+        }
+
+        /* Add emergency sidebar styles */
+        .emergency-btn {
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            padding: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .emergency-btn:hover {
+            color: var(--accent-color);
+            transform: scale(1.1);
+        }
+
+        .emergency-sidebar {
+            position: fixed;
+            top: 0;
+            right: -350px;
+            width: 350px;
+            height: 100vh;
+            background: var(--card-background);
+            padding: 2rem;
+            box-shadow: -2px 0 8px rgba(0,0,0,0.2);
+            transition: right 0.3s ease;
+            z-index: 1050;
+        }
+
+        .emergency-sidebar.active {
+            right: 0;
+        }
+
+        .emergency-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+        }
+
+        .emergency-close {
+            background: none;
+            border: none;
+            color: var(--light-text);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .emergency-close:hover {
+            color: var(--primary-color);
+            transform: scale(1.1);
+        }
+
+        .emergency-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .emergency-item {
+            background: var(--background-color);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .emergency-item:hover {
+            transform: translateX(-5px);
+            box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .emergency-item h5 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .emergency-item p {
+            color: var(--light-text);
+            margin-bottom: 0;
+            font-size: 1rem;
+        }
+
+        .emergency-item i {
+            color: var(--primary-color);
+            margin-right: 0.5rem;
+        }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='img.png') }}" alt="Health Center Logo">
+            </div>
+            <a class="navbar-brand ms-3" href="/">Health Center</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/contact">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/developer">Developer</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/nearby">Nearby Centers</a>
+                    </li>
+                </ul>
+                <button class="emergency-btn" onclick="toggleEmergency()">
+                    <i class="fas fa-phone-alt"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Emergency Sidebar -->
+    <div class="emergency-sidebar" id="emergencySidebar">
+        <div class="emergency-header">
+            <h4><i class="fas fa-phone-alt"></i> Emergency Contacts</h4>
+            <button class="emergency-close" onclick="toggleEmergency()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <ul class="emergency-list">
+            <li class="emergency-item">
+                <h5><i class="fas fa-ambulance"></i> Ambulance</h5>
+                <p>102</p>
+            </li>
+            <li class="emergency-item">
+                <h5><i class="fas fa-hospital"></i> Medical Emergency</h5>
+                <p>108</p>
+            </li>
+            <li class="emergency-item">
+                <h5><i class="fas fa-phone-alt"></i> Health Helpline</h5>
+                <p>1075</p>
+            </li>
+            <li class="emergency-item">
+                <h5><i class="fas fa-first-aid"></i> First Aid Support</h5>
+                <p>1800-180-1104</p>
+            </li>
+            <li class="emergency-item">
+                <h5><i class="fas fa-heart"></i> Cardiac Emergency</h5>
+                <p>1800-180-1209</p>
+            </li>
+        </ul>
+    </div>
+
+    <div class="contact-section">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="contact-card">
+                    <h1 class="section-title">Contact Us</h1>
+                    <p class="mb-4">Have questions or need assistance? We're here to help! Our dedicated support team is ready to assist you.</p>
+                    
+                    <div class="contact-info">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h5 class="mb-0">Email</h5>
+                            <p class="mb-0">healthcarecenter@gmail.com</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-info">
+                        <i class="fas fa-phone"></i>
+                        <div>
+                            <h5 class="mb-0">Phone</h5>
+                            <p class="mb-0">03477155035</p>
+                        </div>
+                    </div>
+
+                    <h5 class="mt-4 mb-3">Stay Connected</h5>
+                    <div class="social-links">
+                        <a href="#" class="social-link">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="contact-card">
+                    <h2 class="section-title">Send us a Message</h2>
+                    <form>
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Your Name</label>
+                            <input type="text" class="form-control" id="name" placeholder="Enter your name">
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email Address</label>
+                            <input type="email" class="form-control" id="email" placeholder="Enter your email">
+                        </div>
+                        <div class="mb-3">
+                            <label for="subject" class="form-label">Subject</label>
+                            <input type="text" class="form-control" id="subject" placeholder="Enter subject">
+                        </div>
+                        <div class="mb-3">
+                            <label for="message" class="form-label">Message</label>
+                            <textarea class="form-control" id="message" rows="5" placeholder="Enter your message"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-submit">
+                            <i class="fas fa-paper-plane me-2"></i>
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function toggleEmergency() {
+            const sidebar = document.getElementById('emergencySidebar');
+            sidebar.classList.toggle('active');
+        }
+    </script>
+  </body>
+</html>

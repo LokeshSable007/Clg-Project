@@ -1,0 +1,675 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Nearby Centers - Health Care Center</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <style>
+        :root {
+            --primary-color: #00ADB5;
+            --secondary-color: #393E46;
+            --accent-color: #00ADB5;
+            --background-color: #222831;
+            --text-color: #EEEEEE;
+            --card-background: #393E46;
+            --light-text: #EEEEEE;
+            --dark-text: #222831;
+            --hover-color: #00858b;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.8;
+        }
+
+        .navbar {
+            background: var(--secondary-color);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .navbar-brand {
+            font-weight: 600;
+            font-size: 1.5rem;
+            color: var(--primary-color) !important;
+        }
+
+        .logo img {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .logo img:hover {
+            transform: scale(1.05);
+        }
+
+        .nearby-section {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .location-prompt {
+            background: var(--card-background);
+            border-radius: 20px;
+            padding: 3rem 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+            border: 1px solid rgba(238, 238, 238, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .location-prompt i {
+            font-size: 4rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.1);
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .location-prompt h2 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(45deg, var(--primary-color), #4ECDC4);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+        }
+
+        .location-prompt p {
+            color: var(--light-text);
+            opacity: 0.9;
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .btn-location {
+            background: var(--primary-color);
+            color: var(--light-text);
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: 2px solid var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 15px rgba(0, 173, 181, 0.2);
+        }
+
+        .btn-location i {
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+            color: var(--light-text) !important;
+        }
+
+        .btn-location:hover {
+            background: transparent;
+            color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 173, 181, 0.3);
+        }
+
+        .btn-location:hover i {
+            transform: rotate(45deg);
+            color: var(--primary-color) !important;
+        }
+
+        #map {
+            height: 500px;
+            border-radius: 16px;
+            margin-bottom: 2rem;
+            display: none;
+            border: 2px solid var(--primary-color);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .filters {
+            background: var(--card-background);
+            border-radius: 16px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .filter-btn {
+            background: var(--background-color);
+            color: var(--light-text);
+            border: 2px solid var(--primary-color);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn.active {
+            background: var(--primary-color);
+            color: var(--light-text);
+        }
+
+        .places-list {
+            background: var(--card-background);
+            border-radius: 16px;
+            padding: 1rem;
+            display: none;
+        }
+
+        .place-item {
+            background: var(--background-color);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 1px solid transparent;
+        }
+
+        .place-item:hover {
+            transform: translateX(10px);
+            border-color: var(--primary-color);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .place-name {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .place-address {
+            color: var(--light-text);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .place-distance {
+            color: var(--accent-color);
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .map-marker-popup {
+            color: var(--dark-text);
+        }
+
+        .map-marker-popup .place-name {
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .map-marker-popup .place-info {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .place-phone {
+            color: var(--accent-color);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .nearby-section {
+                padding: 1rem;
+            }
+            
+            #map {
+                height: 300px;
+            }
+
+            .filters {
+                flex-wrap: wrap;
+            }
+        }
+
+        /* Navigation styles */
+        .navbar-nav .nav-link {
+            position: relative;
+            color: var(--light-text) !important;
+            padding: 0.5rem 1rem !important;
+            margin: 0 0.2rem;
+            transition: all 0.3s ease;
+            opacity: 0.8;
+            display: block !important;
+        }
+
+        .navbar-nav .nav-link:hover {
+            opacity: 1;
+            color: var(--primary-color) !important;
+        }
+
+        .navbar-nav .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+
+        .navbar-nav .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .navbar-nav .nav-link.active {
+            color: var(--primary-color) !important;
+            font-weight: 500;
+            opacity: 1;
+        }
+
+        .navbar-nav .nav-link.active::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: var(--primary-color);
+        }
+
+        .navbar-nav {
+            gap: 0.5rem;
+        }
+
+        /* Add emergency button styles */
+        .emergency-btn {
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            padding: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .emergency-btn:hover {
+            color: var(--accent-color);
+            transform: scale(1.1);
+        }
+
+        .emergency-sidebar {
+            position: fixed;
+            top: 0;
+            right: -350px;
+            width: 350px;
+            height: 100vh;
+            background: var(--card-background);
+            padding: 2rem;
+            box-shadow: -2px 0 8px rgba(0,0,0,0.2);
+            transition: right 0.3s ease;
+            z-index: 1050;
+        }
+
+        .emergency-sidebar.active {
+            right: 0;
+        }
+
+        .emergency-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+        }
+
+        .emergency-close {
+            background: none;
+            border: none;
+            color: var(--light-text);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .emergency-close:hover {
+            color: var(--primary-color);
+            transform: scale(1.1);
+        }
+
+        .emergency-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .emergency-item {
+            background: var(--background-color);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .emergency-item:hover {
+            transform: translateX(-5px);
+            box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .emergency-item h5 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .emergency-item p {
+            color: var(--light-text);
+            margin-bottom: 0;
+            font-size: 1rem;
+        }
+
+        .emergency-item i {
+            color: var(--primary-color);
+            margin-right: 0.5rem;
+        }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='img.png') }}" alt="Health Center Logo">
+            </div>
+            <a class="navbar-brand ms-3" href="/">Health Center</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/contact">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/developer">Developer</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/nearby">Nearby Centers</a>
+                    </li>
+                </ul>
+                <button class="emergency-btn" onclick="toggleEmergency()">
+                    <i class="fas fa-phone-alt"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Emergency Sidebar -->
+    <div class="emergency-sidebar" id="emergencySidebar">
+        <div class="emergency-header">
+            <h4><i class="fas fa-phone-alt"></i> Emergency Contacts</h4>
+            <button class="emergency-close" onclick="toggleEmergency()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <ul class="emergency-list">
+            <li class="emergency-item">
+                <h5><i class="fas fa-ambulance"></i> Ambulance</h5>
+                <p>102</p>
+            </li>
+            <li class="emergency-item">
+                <h5><i class="fas fa-hospital"></i> Medical Emergency</h5>
+                <p>108</p>
+            </li>
+            <li class="emergency-item">
+                <h5><i class="fas fa-phone-alt"></i> Health Helpline</h5>
+                <p>1075</p>
+            </li>
+            <li class="emergency-item">
+                <h5><i class="fas fa-first-aid"></i> First Aid Support</h5>
+                <p>1800-180-1104</p>
+            </li>
+            <li class="emergency-item">
+                <h5><i class="fas fa-heart"></i> Cardiac Emergency</h5>
+                <p>1800-180-1209</p>
+            </li>
+        </ul>
+    </div>
+
+    <div class="nearby-section">
+        <div class="location-prompt" id="locationPrompt">
+            <i class="fas fa-map-marker-alt"></i>
+            <h2>Find Nearby Medical Centers</h2>
+            <p>Allow location access to find hospitals and pharmacies near you</p>
+            <button class="btn-location" onclick="getLocation()">
+                Share Location
+                <i class="fas fa-location-arrow"></i>
+            </button>
+        </div>
+
+        <div class="filters" id="filters" style="display: none;">
+            <button class="filter-btn active" onclick="filterPlaces('all')">All</button>
+            <button class="filter-btn" onclick="filterPlaces('hospitals')">Hospitals</button>
+            <button class="filter-btn" onclick="filterPlaces('pharmacies')">Pharmacies</button>
+        </div>
+
+        <div id="map"></div>
+
+        <div class="places-list" id="placesList"></div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script>
+        let map;
+        let markers = [];
+        let currentFilter = 'all';
+
+        // Custom icon for hospitals
+        const hospitalIcon = L.icon({
+            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            shadowSize: [41, 41]
+        });
+
+        // Custom icon for pharmacies
+        const pharmacyIcon = L.icon({
+            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            shadowSize: [41, 41]
+        });
+
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition, showError);
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+
+        function showPosition(position) {
+            document.getElementById('locationPrompt').style.display = 'none';
+            document.getElementById('filters').style.display = 'flex';
+            document.getElementById('map').style.display = 'block';
+            document.getElementById('placesList').style.display = 'block';
+
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+
+            initMap(lat, lon);
+            searchNearbyPlaces(lat, lon);
+        }
+
+        function showError(error) {
+            let message = '';
+            switch(error.code) {
+                case error.PERMISSION_DENIED:
+                    message = "Location access was denied. Please enable location services to find nearby centers.";
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    message = "Location information is unavailable. Please try again later.";
+                    break;
+                case error.TIMEOUT:
+                    message = "Location request timed out. Please try again.";
+                    break;
+                case error.UNKNOWN_ERROR:
+                    message = "An unknown error occurred. Please try again.";
+                    break;
+            }
+            alert(message);
+        }
+
+        function initMap(lat, lon) {
+            if (map) {
+                map.remove();
+            }
+            
+            map = L.map('map').setView([lat, lon], 14);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors',
+                maxZoom: 19
+            }).addTo(map);
+
+            // Add user location marker with custom popup
+            L.marker([lat, lon])
+                .addTo(map)
+                .bindPopup('<div class="map-marker-popup"><strong>Your Location</strong></div>')
+                .openPopup();
+        }
+
+        function searchNearbyPlaces(lat, lon) {
+            // Example data - in a real application, this would come from an API
+            const dummyPlaces = [
+                {
+                    name: "City General Hospital",
+                    type: "hospitals",
+                    address: "123 Healthcare Ave",
+                    distance: "0.5 km",
+                    phone: "+1 234-567-8900",
+                    lat: lat + 0.002,
+                    lon: lon + 0.002
+                },
+                {
+                    name: "MedPlus Pharmacy",
+                    type: "pharmacies",
+                    address: "456 Medicine St",
+                    distance: "0.8 km",
+                    phone: "+1 234-567-8901",
+                    lat: lat - 0.002,
+                    lon: lon + 0.001
+                },
+                {
+                    name: "Community Hospital",
+                    type: "hospitals",
+                    address: "789 Health Blvd",
+                    distance: "1.2 km",
+                    phone: "+1 234-567-8902",
+                    lat: lat + 0.003,
+                    lon: lon - 0.002
+                },
+                {
+                    name: "Care Pharmacy",
+                    type: "pharmacies",
+                    address: "321 Care Lane",
+                    distance: "0.7 km",
+                    phone: "+1 234-567-8903",
+                    lat: lat - 0.001,
+                    lon: lon - 0.002
+                }
+            ];
+
+            displayPlaces(dummyPlaces);
+        }
+
+        function displayPlaces(places) {
+            const placesList = document.getElementById('placesList');
+            placesList.innerHTML = '';
+
+            // Clear existing markers
+            markers.forEach(marker => map.removeLayer(marker));
+            markers = [];
+
+            places.forEach(place => {
+                if (currentFilter === 'all' || place.type === currentFilter) {
+                    // Create marker with custom icon
+                    const icon = place.type === 'hospitals' ? hospitalIcon : pharmacyIcon;
+                    const marker = L.marker([place.lat, place.lon], {icon: icon})
+                        .addTo(map)
+                        .bindPopup(`
+                            <div class="map-marker-popup">
+                                <div class="place-name">${place.name}</div>
+                                <div class="place-info">
+                                    <div><i class="fas fa-map-marker-alt"></i> ${place.address}</div>
+                                    <div><i class="fas fa-phone"></i> ${place.phone}</div>
+                                    <div><i class="fas fa-road"></i> ${place.distance}</div>
+                                </div>
+                            </div>
+                        `);
+                    markers.push(marker);
+
+                    // Add to list with click handler to open popup
+                    const placeElement = document.createElement('div');
+                    placeElement.className = 'place-item';
+                    placeElement.innerHTML = `
+                        <div class="place-name">${place.name}</div>
+                        <div class="place-address"><i class="fas fa-map-marker-alt"></i> ${place.address}</div>
+                        <div class="place-distance"><i class="fas fa-road"></i> ${place.distance}</div>
+                        <div class="place-phone"><i class="fas fa-phone"></i> ${place.phone}</div>
+                    `;
+                    placeElement.onclick = () => {
+                        map.setView([place.lat, place.lon], 16);
+                        marker.openPopup();
+                    };
+                    placesList.appendChild(placeElement);
+                }
+            });
+        }
+
+        function filterPlaces(type) {
+            currentFilter = type;
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            if (map) {
+                const center = map.getCenter();
+                searchNearbyPlaces(center.lat, center.lng);
+            }
+        }
+    </script>
+  </body>
+</html> 
